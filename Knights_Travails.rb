@@ -14,7 +14,7 @@ class KnightPathFinder
     x , y = pos
     result = [[-1, 2], [-2,1], [-2,-1], [-1,-2], [1,-2], [2,-1], [2,1], [1,2]]
     result.map! { |pair| pair[0], pair[1] = (x + pair[0]), (y + pair[1]) }
-    result.select { |pair| pair.all? { |el| el >= 0 } && pair.all? { |el| el < 7 } }
+    result.select { |pair| pair.all? { |el| el >= 0 } && pair.all? { |el| el <= 7 } }
   end
 
   def new_move_pos(pos) #valid_moves - visited_pos
@@ -44,11 +44,24 @@ class KnightPathFinder
   #can use BFS if target is close to start point
   #use .abs on each index.
   def find_path(end_pos)
-    byebug
-    root_node.dfs(end_pos)
+    root = root_node.dfs(end_pos)
+    # trace_path_back
+    trace_path_back(root)
   end
 
   #Use to add prev positions from find_path(end_pos) to arr
-  def trace_path_back
+  def trace_path_back(root)
+    arr = [root.value]
+    node = root.parent
+    until node.parent == nil
+      parent_node = node.parent
+      arr.unshift(node.parent.value)
+      node = parent_node
+    end
+    arr
   end
 end
+
+game1 = KnightPathFinder.new
+game1.build_move_tree
+p game1.find_path([7, 6])
