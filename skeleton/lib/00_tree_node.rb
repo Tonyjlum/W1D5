@@ -42,8 +42,6 @@ class PolyTreeNode
     self.children.each do |child|
       recursive_call = child.dfs(target_value)
       return recursive_call unless recursive_call.nil?
-
-
     end
     #recursively check each self, then first child until child
     #either == target or == nil, then check next
